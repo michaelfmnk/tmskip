@@ -1,0 +1,12 @@
+{
+  "path": "/Users/t/Developer/svc/build",
+  "excluded_now": false,
+  "owner": "none",
+  "decision": "exclude",
+  "reason": "matched",
+  "rule": "jvm-build",
+  "key": "parent_has",
+  "gate": "build.gradle",
+  "guard": "",
+  "covered_by": ""
+}

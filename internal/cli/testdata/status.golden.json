@@ -1,0 +1,37 @@
+{
+  "config": "/Users/t/.config/tmskip/config.toml",
+  "last_run": {
+    "at": "2026-11-16T10:00:00+01:00",
+    "scheduled": false,
+    "exit_code": 3,
+    "excluded": 2,
+    "included": 0,
+    "unchanged": 0,
+    "problems": [
+      {
+        "path": "/Users/t/Developer/locked",
+        "error": "operation not permitted",
+        "denied": true
+      }
+    ],
+    "error": ""
+  },
+  "managed": {
+    "count": 3,
+    "bytes": 2007040,
+    "unmeasured": 1
+  },
+  "problems": [
+    {
+      "path": "/Users/t/Developer/locked",
+      "error": "operation not permitted",
+      "denied": true
+    }
+  ],
+  "schedule": {
+    "on": false,
+    "interval": "1h",
+    "stale": []
+  },
+  "warnings": []
+}

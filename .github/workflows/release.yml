@@ -1,0 +1,70 @@
+name: release
+
+# Runs when a version tag (v1.2.3) is pushed. Needs these repository secrets
+# (never stored in the repo):
+#   MACOS_SIGN_P12          base64 of the "Developer ID Application" certificate (.p12)
+#   MACOS_SIGN_PASSWORD     the .p12 password
+#   MACOS_NOTARY_KEY        App Store Connect API key (.p8 contents, base64)
+#   MACOS_NOTARY_KEY_ID     its key ID
+#   MACOS_NOTARY_ISSUER_ID  its issuer ID
+#   HOMEBREW_TAP_TOKEN      token with push access to michaelfmnk/homebrew-tap
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: test
+        run: go vet ./... && go test ./... && go test -tags integration ./internal/exclusion/
+      - name: build, sign, notarize, release
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: v2.19.0
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOS_SIGN_P12: ${{ secrets.MACOS_SIGN_P12 }}
+          MACOS_SIGN_PASSWORD: ${{ secrets.MACOS_SIGN_PASSWORD }}
+          MACOS_NOTARY_KEY: ${{ secrets.MACOS_NOTARY_KEY }}
+          MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
+          MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
+      - name: verify signature
+        run: |
+          bin=$(find dist -path '*tmskip_darwin_all*' -name tmskip -type f | head -1)
+          codesign --verify --strict --verbose=2 "$bin"
+          codesign -dv "$bin" 2>&1 | grep -E 'Identifier|TeamIdentifier|flags'
+          lipo -archs "$bin"
+      - name: render Homebrew formula
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          sh packaging/homebrew/render.sh "$version" "dist/tmskip_${version}_darwin_universal.zip" > tmskip.rb
+          cat tmskip.rb
+      - name: checkout tap
+        uses: actions/checkout@v4
+        with:
+          repository: michaelfmnk/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+      - name: publish formula
+        run: |
+          mkdir -p tap/Formula
+          cp tmskip.rb tap/Formula/tmskip.rb
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/tmskip.rb
+          git commit -m "tmskip ${GITHUB_REF_NAME}"
+          git push

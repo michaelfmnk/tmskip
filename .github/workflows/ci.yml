@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: gofmt, vet, unit tests
+        run: make check
+      # Real xattrs and tmutil, only on directories the tests create in the
+      # runner's temp dir.
+      - name: integration tests
+        run: make integration

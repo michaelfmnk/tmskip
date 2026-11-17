@@ -1,0 +1,100 @@
+{
+  "checks": [
+    {
+      "name": "config",
+      "status": "ok",
+      "detail": "/Users/t/.config/tmskip/config.toml — 1 root, 8 enabled rules",
+      "fix": ""
+    },
+    {
+      "name": "time machine",
+      "status": "ok",
+      "detail": "a backup destination is configured",
+      "fix": ""
+    },
+    {
+      "name": "full disk access",
+      "status": "ok",
+      "detail": "granted to the scheduled run; not needed (no root or fixed path is in a protected folder)",
+      "fix": ""
+    },
+    {
+      "name": "agent",
+      "status": "ok",
+      "detail": "loaded (dev.tmskip.agent)",
+      "fix": ""
+    },
+    {
+      "name": "agent binary",
+      "status": "ok",
+      "detail": "/opt/homebrew/bin/tmskip",
+      "fix": ""
+    },
+    {
+      "name": "agent config",
+      "status": "ok",
+      "detail": "/Users/t/.config/tmskip/config.toml",
+      "fix": ""
+    },
+    {
+      "name": "agent interval",
+      "status": "ok",
+      "detail": "every 1h",
+      "fix": ""
+    },
+    {
+      "name": "group node",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group python",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group python-venv",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group jvm-build",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group rust",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group swiftpm",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group nobackup-marker",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "group dev-caches",
+      "status": "info",
+      "detail": "in your config",
+      "fix": ""
+    },
+    {
+      "name": "version",
+      "status": "info",
+      "detail": "tmskip 1.2.3",
+      "fix": ""
+    }
+  ]
+}

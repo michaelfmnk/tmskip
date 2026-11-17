@@ -1,0 +1,39 @@
+{
+  "dry_run": true,
+  "config": "/Users/t/.config/tmskip/config.toml",
+  "actions": [
+    {
+      "op": "exclude",
+      "path": "/Users/t/Developer/my app/node_modules",
+      "rule": "node",
+      "bytes": 8192
+    },
+    {
+      "op": "include",
+      "path": "/Users/t/Developer/old/vendor",
+      "reason": "no rule matches"
+    },
+    {
+      "op": "exclude",
+      "path": "/Users/t/Developer/Проєкти/web/node_modules",
+      "rule": "node",
+      "bytes": 12288
+    }
+  ],
+  "summary": {
+    "excluded": 2,
+    "included": 1,
+    "unchanged": 0,
+    "user_owned": 0
+  },
+  "problems": [
+    {
+      "path": "/Users/t/Developer/locked",
+      "error": "permission denied",
+      "denied": false
+    }
+  ],
+  "warnings": [
+    "root ~/Develper does not exist"
+  ]
+}

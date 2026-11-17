@@ -1,0 +1,77 @@
+# GoReleaser config (pinned: v2.19.0 — see .github/workflows/release.yml).
+# Builds one universal (arm64 + x86_64) macOS binary, signs it with the
+# Developer ID certificate and notarizes it (only when the signing secrets are
+# set, i.e. in the release workflow), and zips it with LICENSE and README.
+# The Homebrew formula is rendered by the release workflow from
+# packaging/homebrew/tmskip.rb.tmpl (GoReleaser's formula publisher is
+# deprecated in this version).
+version: 2
+
+project_name: tmskip
+
+builds:
+  - id: tmskip
+    main: ./cmd/tmskip
+    binary: tmskip
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+
+universal_binaries:
+  - id: tmskip
+    ids:
+      - tmskip
+    name_template: tmskip
+    replace: true
+
+# Sign (Developer ID, hardened runtime) and notarize the universal binary.
+# The FDA grant is keyed on team ID + code-signing identifier, which is the
+# binary name ("tmskip") and stays the same across releases.
+notarize:
+  macos:
+    - enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'
+      ids:
+        - tmskip
+      sign:
+        certificate: "{{ .Env.MACOS_SIGN_P12 }}"
+        password: "{{ .Env.MACOS_SIGN_PASSWORD }}"
+      notarize:
+        issuer_id: "{{ .Env.MACOS_NOTARY_ISSUER_ID }}"
+        key_id: "{{ .Env.MACOS_NOTARY_KEY_ID }}"
+        key: "{{ .Env.MACOS_NOTARY_KEY }}"
+        wait: true
+        timeout: 20m
+
+archives:
+  - id: tmskip
+    ids:
+      - tmskip
+    formats:
+      - zip
+    name_template: "{{ .ProjectName }}_{{ .Version }}_darwin_universal"
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  github:
+    owner: michaelfmnk
+    name: tmskip

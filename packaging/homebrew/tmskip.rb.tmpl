@@ -1,0 +1,31 @@
+# Rendered by packaging/homebrew/render.sh in the release workflow and pushed
+# to michaelfmnk/homebrew-tap as Formula/tmskip.rb. Installs the signed and
+# notarized release binary (not a from-source build), so the Full Disk Access
+# grant survives `brew upgrade`.
+class Tmskip < Formula
+  desc "Keep rebuildable developer folders out of Time Machine backups"
+  homepage "https://github.com/michaelfmnk/tmskip"
+  url "https://github.com/michaelfmnk/tmskip/releases/download/v@VERSION@/tmskip_@VERSION@_darwin_universal.zip"
+  version "@VERSION@"
+  sha256 "@SHA256@"
+  license "MIT"
+
+  depends_on :macos
+
+  def install
+    bin.install "tmskip"
+  end
+
+  def caveats
+    <<~EOS
+      Get started:
+        tmskip init
+      The scheduled run needs Full Disk Access only for folders in Documents,
+      Desktop, Downloads, iCloud Drive or external volumes; "tmskip doctor" tells you.
+    EOS
+  end
+
+  test do
+    assert_equal "tmskip #{version}", shell_output("#{bin}/tmskip --version").strip
+  end
+end

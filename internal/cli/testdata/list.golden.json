@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "path": "/Users/t/Developer/a/node_modules",
+      "rule": "node",
+      "state": "excluded"
+    },
+    {
+      "path": "/Users/t/Developer/b/node_modules",
+      "rule": "node",
+      "state": "marked_only"
+    },
+    {
+      "path": "/Users/t/Developer/c/node_modules",
+      "state": "missing"
+    },
+    {
+      "path": "/Users/t/Developer/d/vendor",
+      "state": "no_longer_matches"
+    },
+    {
+      "path": "/Volumes/USB/x/node_modules",
+      "state": "unmounted"
+    }
+  ]
+}

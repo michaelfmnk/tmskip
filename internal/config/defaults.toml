@@ -1,0 +1,53 @@
+# node — JavaScript/TypeScript dependencies and Next.js build output
+[[rule]]
+name  = "node"
+names = ["node_modules", ".next"]
+
+# python — caches written by Python tools
+[[rule]]
+name  = "python"
+names = ["__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", ".tox", ".nox"]
+
+# python-venv — any virtualenv (a folder containing pyvenv.cfg), whatever its name
+[[rule]]
+name     = "python-venv"
+contains = ["pyvenv.cfg"]
+
+# jvm-build — Gradle/Maven output next to a build file
+# (bin/ and out/ are often checked-in source; add them in your own rule if you want)
+[[rule]]
+name       = "jvm-build"
+names      = ["build", "target"]
+parent_has = ["build.gradle", "build.gradle.kts", "settings.gradle",
+              "settings.gradle.kts", "pom.xml"]
+
+# rust — Cargo build output
+[[rule]]
+name       = "rust"
+names      = ["target"]
+parent_has = ["Cargo.toml"]
+
+# swiftpm — Swift Package Manager build output
+[[rule]]
+name       = "swiftpm"
+names      = [".build"]
+parent_has = ["Package.swift"]
+
+# nobackup-marker — any folder you mark by creating a .nobackup file in it
+[[rule]]
+name     = "nobackup-marker"
+contains = [".nobackup"]
+
+# dev-caches — package-manager, model and Xcode caches (missing paths are skipped)
+[[rule]]
+name  = "dev-caches"
+paths = [
+  "~/.npm",
+  "~/.m2/repository",
+  "~/.gradle/caches",
+  "~/.gradle/wrapper",
+  "~/.cache/huggingface",
+  "~/Library/Developer/Xcode/DerivedData",
+  "~/Library/Developer/Xcode/iOS DeviceSupport",
+  "~/Library/Developer/CoreSimulator",
+]
